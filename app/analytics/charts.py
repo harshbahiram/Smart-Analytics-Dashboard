@@ -1,5 +1,6 @@
 import plotly.express as px
 from dash import dcc, html
+import numpy as np
 
 def generate_charts(df):
 
@@ -43,3 +44,30 @@ def generate_charts(df):
             )
         )
     return charts
+
+
+def generate_heatmap(df):
+
+    numeric_df = df.select_dtypes(include=['number'])
+
+    if numeric_df.shape[1] < 2:
+
+        return html.Div([
+            html.H3(
+                "Not enough numeric columns"
+                "for correlation heatmap"
+            )
+        ])
+    
+    correlation_matrix = numeric_df.corr()
+
+    fig = px.imshow(
+        correlation_matrix,
+        text_auto=True,
+        aspect="auto",
+        title="Correlation Heatmap"
+    )
+
+    return html.Div([
+        dcc.Graph(figure=fig)
+    ])

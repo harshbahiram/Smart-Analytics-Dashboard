@@ -5,8 +5,7 @@ from datetime import datetime
 import pandas as pd
 from dash import html, dash_table
 from dash.dependencies import Input, Output, State
-from app.analytics.charts import generate_charts
-
+from app.analytics.charts import (generate_charts, generate_heatmap)
 from app.analytics.profiler import generate_profile
 
 UPLOAD_FOLDER = "app/uploads"
@@ -36,7 +35,7 @@ def parse_contents(contents, filename):
         profile = generate_profile(df)
 
         charts = generate_charts(df)
-
+        heatmap = generate_heatmap(df)
         info = html.Div([
 
             html.H3("Dataset Information"),
@@ -70,7 +69,10 @@ def parse_contents(contents, filename):
             table,
             html.Hr(),
             html.H2("Auto Generated Charts"),
-            *charts
+            *charts,
+            html.Hr(),
+            html.H2("Correlation Heatmap"),
+            heatmap
         ])
     
     except Exception as e:  
