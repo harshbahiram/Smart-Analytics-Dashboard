@@ -54,8 +54,7 @@ def generate_heatmap(df):
 
         return html.Div([
             html.H3(
-                "Not enough numeric columns"
-                "for correlation heatmap"
+                "Not enough numeric columns for correlation heatmap"
             )
         ])
     
