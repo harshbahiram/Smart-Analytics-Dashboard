@@ -5,6 +5,7 @@ from datetime import datetime
 import pandas as pd
 from dash import html, dash_table
 from dash.dependencies import Input, Output, State
+from app.analytics.charts import generate_charts
 
 from app.analytics.profiler import generate_profile
 
@@ -33,6 +34,8 @@ def parse_contents(contents, filename):
             ])
         
         profile = generate_profile(df)
+
+        charts = generate_charts(df)
 
         info = html.Div([
 
@@ -63,7 +66,12 @@ def parse_contents(contents, filename):
             style_table={'overflowX': 'auto'},
             page_size=10
         )
-        return info, table
+        return info, html.Div([
+            table,
+            html.Hr(),
+            html.H2("Auto Generated Charts"),
+            *charts
+        ])
     
     except Exception as e:  
         return html.Div([
