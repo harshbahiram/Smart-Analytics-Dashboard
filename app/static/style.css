@@ -1,0 +1,39 @@
+body{
+    background-color:#f5f7fb;
+    font-family:Arial;
+}
+
+.main-container{
+    padding:30px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+    box-shadow:
+    0 2px 8px rgba(0,0,0,0.08);
+}
+
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.kpi-container{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.kpi-card{
+    flex:1;
+    min-width:200px;
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:
+    0 2px 8px rgba(0,0,0,0.08);
+}
