@@ -43,46 +43,104 @@ def parse_contents(contents, filename):
         )
         info = html.Div([
 
-            html.H3("Dataset Information"),
+            html.Div([
 
-            html.P(f"Filename: {saved_filename}"),
-            html.P(f"Rows: {profile['rows']}"),
-            html.P(f"Columns: {profile['columns']}"),
+                html.Div([
 
-            html.Hr(),
+                    html.H3(profile["rows"]),
+                    html.P("Rows")
 
-            html.H3("Data Quality Report"),
+                ],
 
-            html.H4("Missing Values Details"),
-            html.Ul([
-                html.Li(
-                    f"{col}: "
-                    f"{profile['missing_per_column'][col]} missing "
-                    f"({profile['missing_percentage'][col]}%)"
-                )
-                for col in profile['missing_per_column']
-                if profile['missing_per_column'][col] > 0
-            ]),
+                className="kpi-card"),
 
-            html.H4("Unique Values per Column"),
-            html.Ul([
-                html.Li(
-                    f"{col}: "
-                    f"{profile['unique_values'][col]} unique values"
-                )
-                for col in profile['unique_values']
-            ]),
+                html.Div([
 
+                    html.H3(
+                        profile["columns"]
+                    ),
 
-            html.P(f"Missing Values: {profile['missing_values']}"),
-            html.P(f"Duplicate Rows: {profile['duplicate_rows']}"),
-            html.P(f"Numeric Columns: {profile['numeric_columns']}"),
+                    html.P("Columns")
 
-            html.P(
-                f"Categorical Columns: "
-                f"{profile['categorical_columns']}"
-            )
+                ],
 
+                className="kpi-card"),
+
+                html.Div([
+
+                    html.H3(
+
+                        profile[
+                            "missing_values"
+                        ]
+
+                    ),
+
+                    html.P(
+                        "Missing Values"
+                    )
+
+                ],
+
+                className="kpi-card"),
+
+                html.Div([
+
+                    html.H3(
+
+                        profile[
+                            "duplicate_rows"
+                        ]
+
+                    ),
+
+                    html.P(
+                        "Duplicates"
+                    )
+
+                ],
+
+                className="kpi-card")
+
+            ],
+
+            className="kpi-container"),
+
+            html.Br(),
+
+            html.Div([
+
+                html.H3(
+                    "Data Quality Report"
+                ),
+
+                html.H4(
+                    "Missing Values"
+                ),
+
+                html.Ul([
+
+                    html.Li(
+
+                        f"{col}: "
+                        f"{profile['missing_percentage'][col]}%"
+
+                    )
+
+                    for col in profile[
+                        "missing_percentage"
+                    ]
+
+                    if profile[
+                        "missing_per_column"
+                    ][col] >0
+
+                ])
+
+            ],
+
+            className="card")
+            
         ])
 
         table = dash_table.DataTable(

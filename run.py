@@ -8,7 +8,8 @@ server = Flask(__name__)
 
 app = Dash(
     __name__,
-    server=server
+    server=server,
+    assets_folder="app/static"
 )
 
 app.layout = layout
