@@ -7,6 +7,7 @@ from dash import html, dash_table
 from dash.dependencies import Input, Output, State
 from app.analytics.charts import (generate_charts, generate_heatmap)
 from app.analytics.profiler import generate_profile
+from app.analytics.analytics import generate_insights
 
 UPLOAD_FOLDER = "app/uploads"
 
@@ -36,6 +37,10 @@ def parse_contents(contents, filename):
 
         charts = generate_charts(df)
         heatmap = generate_heatmap(df)
+        insights = generate_insights(
+            df,
+            profile
+        )
         info = html.Div([
 
             html.H3("Dataset Information"),
@@ -47,6 +52,27 @@ def parse_contents(contents, filename):
             html.Hr(),
 
             html.H3("Data Quality Report"),
+
+            html.H4("Missing Values Details"),
+            html.Ul([
+                html.Li(
+                    f"{col}: "
+                    f"{profile['missing_per_column'][col]} missing "
+                    f"({profile['missing_percentage'][col]}%)"
+                )
+                for col in profile['missing_per_column']
+                if profile['missing_per_column'][col] > 0
+            ]),
+
+            html.H4("Unique Values per Column"),
+            html.Ul([
+                html.Li(
+                    f"{col}: "
+                    f"{profile['unique_values'][col]} unique values"
+                )
+                for col in profile['unique_values']
+            ]),
+
 
             html.P(f"Missing Values: {profile['missing_values']}"),
             html.P(f"Duplicate Rows: {profile['duplicate_rows']}"),
@@ -71,7 +97,12 @@ def parse_contents(contents, filename):
             html.H2("Auto Generated Charts"),
             *charts,
             html.Hr(),
-            html.H2("Correlation Heatmap"),
+            html.H2("Correlation Analysis"),
+            html.Hr(),
+            html.H2("Smart Insights"),
+            html.Ul([
+                html.Li(insight) for insight in insights
+            ]),
             heatmap
         ])
     
