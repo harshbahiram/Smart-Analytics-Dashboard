@@ -8,6 +8,7 @@ from dash.dependencies import Input, Output, State
 from app.analytics.charts import (generate_charts, generate_heatmap)
 from app.analytics.profiler import generate_profile
 from app.analytics.analytics import generate_insights
+from app.database.services import save_uploaded_file
 
 UPLOAD_FOLDER = "app/uploads"
 
@@ -34,6 +35,13 @@ def parse_contents(contents, filename):
             ])
         
         profile = generate_profile(df)
+
+        save_uploaded_file(
+            filename = saved_filename,
+            filepath = filepath,
+            rows = df.shape[0],
+            columns = df.shape[1]
+        )
 
         charts = generate_charts(df)
         heatmap = generate_heatmap(df)
