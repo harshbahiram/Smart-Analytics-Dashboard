@@ -1,13 +1,13 @@
 import plotly.express as px
 from dash import dcc, html
-import numpy as np
+
 
 def generate_charts(df):
-
+    """Generate charts based on column data types."""
     charts = []
 
-    numeric_columns = df.select_dtypes(include=['number']).columns
-    categorical_columns = df.select_dtypes(include=['object']).columns
+    numeric_columns = df.select_dtypes(include=["number"]).columns
+    categorical_columns = df.select_dtypes(include=["object"]).columns
 
     for col in numeric_columns:
         fig = px.histogram(
@@ -15,10 +15,9 @@ def generate_charts(df):
         )
 
         charts.append(
-            html.Div([
-                dcc.Graph(figure=fig)
-            ], 
-            style={'marginBottom': '40px'}
+            html.Div(
+                dcc.Graph(figure=fig),
+                style={'marginBottom': '40px'}
             )
         )
 
@@ -47,7 +46,7 @@ def generate_charts(df):
 
 
 def generate_heatmap(df):
-
+    """Generate correlation heatmap for numeric columns."""
     numeric_df = df.select_dtypes(include=['number'])
 
     if numeric_df.shape[1] < 2:
@@ -58,7 +57,7 @@ def generate_heatmap(df):
             )
         ])
     
-    correlation_matrix = numeric_df.corr()
+    correlation_matrix = numeric_df.corr().round(2)
 
     fig = px.imshow(
         correlation_matrix,

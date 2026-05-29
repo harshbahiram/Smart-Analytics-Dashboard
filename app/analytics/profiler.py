@@ -1,8 +1,6 @@
 def generate_profile(df):
-
-    missing_per_column = (
-        df.isnull().sum().to_dict()
-    )
+    """Generate basic dataset profiling statistics."""
+    missing_per_column = df.isnull().sum().to_dict()
 
     missing_percentage = (
         (df.isnull().sum() / len(df)) * 100

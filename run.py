@@ -1,6 +1,3 @@
-import os
-import sys
-
 from flask import Flask
 from dash import Dash
 
@@ -22,9 +19,7 @@ app.layout = layout
 
 register_callbacks(app)
 
-Base.metadata.create_all(
-    bind=engine
-)
+Base.metadata.create_all(bind=engine)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,5 +1,4 @@
 import base64
-import io
 import os
 from datetime import datetime
 import pandas as pd
@@ -9,11 +8,12 @@ from app.analytics.charts import (generate_charts, generate_heatmap)
 from app.analytics.profiler import generate_profile
 from app.analytics.analytics import generate_insights
 from app.database.services import save_uploaded_file
+from config import Config
 
-UPLOAD_FOLDER = "app/uploads"
+UPLOAD_FOLDER = Config.UPLOAD_FOLDER
 
 def parse_contents(contents, filename):
-    content_type, content_string = contents.split(',')
+    content_string = contents.split(',')
     decoded  = base64.b64decode(content_string)
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -141,7 +141,7 @@ def parse_contents(contents, filename):
 
                     if profile[
                         "missing_per_column"
-                    ][col] >0
+                    ][col] > 0
 
                 ])
 
@@ -154,7 +154,7 @@ def parse_contents(contents, filename):
         table = dash_table.DataTable(
             data=df.head(10).to_dict('records'),
             columns=[{"name": i, "id": i} for i in df.columns],
-            style_table={'overflowX': 'auto'},
+            style_table={"overflowX": "auto"},
             page_size=10
         )
         return info, html.Div([
@@ -164,6 +164,7 @@ def parse_contents(contents, filename):
             *charts,
             html.Hr(),
             html.H2("Correlation Analysis"),
+            heatmap,
             html.Hr(),
             html.H2("Smart Insights"),
             html.Ul([
@@ -172,9 +173,9 @@ def parse_contents(contents, filename):
             heatmap
         ])
     
-    except Exception as e:  
+    except Exception as error:  
         return html.Div([
-            f"Error processing file: {str(e)}"
+            f"Error processing file: {str(error)}"
         ])
     
 def register_callbacks(app):
@@ -191,4 +192,4 @@ def register_callbacks(app):
     def update_output(contents, filename):
         if contents is not None:
             return parse_contents(contents, filename)
-        return "",""
+        return "", ""

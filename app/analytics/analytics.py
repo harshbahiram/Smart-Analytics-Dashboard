@@ -1,5 +1,5 @@
 def generate_insights(df, profile):
-
+    """Generate data quality and correlation insights."""
     insights = []
 
     for col, percent in profile[
@@ -32,36 +32,31 @@ def generate_insights(df, profile):
 
         corr_matrix = numeric_df.corr()
 
-        for col1 in corr_matrix.columns:
+        columns = corr_matrix.columns
 
-            for col2 in corr_matrix.columns:
+        for i in range(len(columns)):
+            for j in range(i + 1, len(columns)):
+                col1 = columns[i]
+                col2 = columns[j]
 
-                if col1 != col2:
-
-                    corr_value = corr_matrix.loc[
+                corr_value = corr_matrix.loc[
                         col1,
                         col2
-                    ]
+                ]
 
-                    if corr_value > 0.7:
+                if corr_value > 0.7:
+                    insights.append(
+                        f"'{col1}' and '{col2}' "
+                        f"have strong positive correlation "
+                        f"({corr_value:.2f})."
+                    )
 
-                        insights.append(
-
-                            f"'{col1}' and '{col2}' "
-                            f"have strong positive correlation "
-                            f"({corr_value:.2f})."
-
-                        )
-
-                    elif corr_value < -0.7:
-
-                        insights.append(
-
-                            f"'{col1}' and '{col2}' "
-                            f"have strong negative correlation "
-                            f"({corr_value:.2f})."
-
-                        )
+                elif corr_value < -0.7:
+                    insights.append(
+                        f"'{col1}' and '{col2}' "
+                        f"have strong negative correlation "
+                        f"({corr_value:.2f})."
+                    )
 
     if not insights:
 

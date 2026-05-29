@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
 from config import Config
 
+if not Config.DB_PASSWORD:
+    raise ValueError(
+        "DB_PASSWORD is not set in .env"
+    )
 
 DATABASE_URL = (
 
@@ -14,12 +17,7 @@ DATABASE_URL = (
     f"{Config.DB_NAME}"
 
 )
-
-if not DATABASE_URL:
-    raise ValueError(
-        "DATABASE_URL is not set. Please check your environment variables."
-    )
-
+ 
 engine = create_engine(
     DATABASE_URL,
     echo=False,

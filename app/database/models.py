@@ -1,7 +1,4 @@
-from sqlalchemy import Column
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import DateTime
+from sqlalchemy import Column, DateTime, Integer, String
 
 from datetime import datetime
 
@@ -9,7 +6,7 @@ from app.database.db import Base
 
 
 class UploadedFile(Base):
-
+    """Stores metasdata for uploaded files."""
     __tablename__ = "uploaded_files"
 
     id = Column(
@@ -29,11 +26,13 @@ class UploadedFile(Base):
     )
 
     rows = Column(
-        Integer
+        Integer,
+        nullable=False
     )
 
     columns = Column(
-        Integer
+        Integer,
+        nullable=False
     )
 
     upload_time = Column(
