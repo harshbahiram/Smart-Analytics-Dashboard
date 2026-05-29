@@ -15,6 +15,11 @@ DATABASE_URL = (
 
 )
 
+if not DATABASE_URL:
+    raise ValueError(
+        "DATABASE_URL is not set. Please check your environment variables."
+    )
+
 engine = create_engine(
     DATABASE_URL,
     echo=False,
